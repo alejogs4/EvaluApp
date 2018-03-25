@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="20dp">
+    <TextView
+        android:id="@+id/txt_name_welcome_student"
+        style="@style/textViewsTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Bienvenido estudiante"
+        android:layout_gravity="center_horizontal"/>
+    <Button
+        android:id="@+id/btn_review_notes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/loginButton"
+        android:text="Revisar notas"
+        android:textSize="15dp"/>
+    <ListView
+        android:id="@+id/list_tests_student"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"></ListView>
+    <ProgressBar
+        android:id="@+id/pb_student"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="visible"/>
+</LinearLayout>

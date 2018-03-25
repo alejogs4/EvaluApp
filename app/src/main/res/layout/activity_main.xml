@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.ags.agsmvmm.evaluacionesudem.MainActivity"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Bienvenido a Evaluaciones UDEM"
+        android:layout_gravity="center_horizontal"
+        style="@style/textViewsTitle"/>
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dp"
+        android:src="@drawable/evaluation"/>
+    <Button
+        android:id="@+id/btn_student_login"
+        android:text="Iniciar como estudiante"
+        style="@style/loginButton" />
+    <Button
+        android:id="@+id/btn_teacher_login"
+        android:text="Iniciar como profesor"
+        style="@style/loginButton" />
+
+
+</LinearLayout>

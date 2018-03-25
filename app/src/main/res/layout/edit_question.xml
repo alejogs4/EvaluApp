@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="20dp">
+    <TextView
+        style="@style/textViewsTitle"
+        android:text="Editar pregunta"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"/>
+    <EditText
+        android:id="@+id/edit_question_e"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Titulo de la pregunta"
+        android:layout_marginBottom="20dp"/>
+    <EditText
+        android:id="@+id/edit_answer_e"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Respuesta"
+        android:paddingBottom="20dp"/>
+    <RadioGroup
+        android:id="@+id/type_answer_e"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="20dp">
+        <RadioButton
+            android:id="@+id/true_answer_e"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Verdadera"/>
+        <RadioButton
+            android:id="@+id/false_answer_e"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Falsa"/>
+    </RadioGroup>
+    <Button
+        android:id="@+id/btn_add_question_e"
+        style="@style/loginButton"
+        android:text="Editar pregunta"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>
