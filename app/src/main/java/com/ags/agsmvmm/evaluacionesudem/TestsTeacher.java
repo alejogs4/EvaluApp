@@ -2,6 +2,8 @@ package com.ags.agsmvmm.evaluacionesudem;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
@@ -11,6 +13,7 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,36 +41,47 @@ public class TestsTeacher  extends AppCompatActivity{
     private ArrayList<String> testsArray = new ArrayList<>();
     private ArrayAdapter adapter;
 
+    private Toolbar toolbar;
+    private DrawerLayout drawerLayout;
+    private NavigationView navigationView;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.test_layout);
         connect();
+
         adapter = new ArrayAdapter(TestsTeacher.this,android.R.layout.simple_list_item_1,testsArray);
         listTests.setAdapter(adapter);
+
         Bundle extras = getIntent().getExtras();
         String name = extras.getString("name");
         final String id = extras.getString("id");
+
         welcomeTitle.setText("Bienvenido profesor " + name);
 
-        addTestButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(TestsTeacher.this,AddTest.class);
-                i.putExtra("id",id);
-                startActivity(i);
-            }
+        setActionBar(toolbar);
+
+        navigationView.setNavigationItemSelectedListener(item -> {
+            if(item.isChecked()) item.setChecked(false);
+            else item.setChecked(true);
+
+            return false;
+        });
+
+        addTestButton.setOnClickListener(view -> {
+            Intent i = new Intent(TestsTeacher.this,AddTest.class);
+            i.putExtra("id",id);
+            startActivity(i);
         });
         loadTests();
-        listTests.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                String idTest = testsArray.get(i).split(" ")[0];
-                Intent in = new Intent(TestsTeacher.this,AddQuestion.class);
-                in.putExtra("id",idTest);
-                in.putExtra("idTest",tests.get(i).getTestType().toString());
-                startActivity(in);
-            }
+        listTests.setOnItemClickListener((adapterView, view, i, l) -> {
+            String idTest = testsArray.get(i).split(" ")[0];
+            Intent in = new Intent(TestsTeacher.this,AddQuestion.class);
+            in.putExtra("id",idTest);
+            in.putExtra("idTest",tests.get(i).getTestType().toString());
+            startActivity(in);
         });
         listTests.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
@@ -118,6 +132,9 @@ public class TestsTeacher  extends AppCompatActivity{
     }
 
     private void connect () {
+        toolbar = findViewById(R.id.toolbar);
+        drawerLayout = findViewById(R.id.drawer_layout);
+        navigationView = findViewById(R.id.navigationView);
         welcomeTitle = findViewById(R.id.txt_name_welcome);
         addTestButton = findViewById(R.id.btn_add_test);
         listTests = findViewById(R.id.list_tests);

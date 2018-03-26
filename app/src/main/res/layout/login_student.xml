@@ -22,19 +22,27 @@
             android:layout_marginTop="20dp"
             android:src="@drawable/evaluation"
             android:layout_gravity="center_horizontal"/>
-        <EditText
-            android:id="@+id/user_field_student"
+        <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Nombre de usuario"
-            android:layout_marginTop="20dp"/>
-        <EditText
-            android:id="@+id/password_field_student"
+            android:layout_height="wrap_content">
+            <EditText
+                android:id="@+id/user_field_student"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Nombre de usuario"
+                android:layout_marginTop="20dp"/>
+        </android.support.design.widget.TextInputLayout>
+        <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Contraseña"
-            android:layout_marginTop="20dp"
-            android:inputType="textPassword"/>
+            android:layout_height="wrap_content">
+            <EditText
+                android:id="@+id/password_field_student"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Contraseña"
+                android:layout_marginTop="20dp"
+                android:inputType="textPassword"/>
+        </android.support.design.widget.TextInputLayout>
         <Button
             android:id="@+id/btn_login_student"
             android:text="Ingresar"
@@ -45,7 +53,6 @@
             android:id="@+id/registry_link"
             android:text="No tienes cuenta? Registrate"
             android:textSize="18dp"
-
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </LinearLayout>

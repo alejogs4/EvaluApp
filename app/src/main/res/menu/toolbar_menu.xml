@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group>
+        <item
+            android:id="@+id/tests"
+            android:title="@string/all_tests"
+            android:checked="false"/>
+        <item
+            android:id="@+id/students_results"
+            android:title="@string/results_students"
+            android:checked="false"/>
+    </group>
+
+</menu>

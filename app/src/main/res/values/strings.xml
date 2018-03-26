@@ -6,4 +6,10 @@
     <string name="save_note">Nota guardada</string>
     <string name="no_more_questions">No hay mas preguntas,finaliza el examen</string>
     <string name="not_create_test">No se ha podido crear el examen</string>
+    <string name="dni">DNI</string>
+    <string name="username">Nombre de usuario</string>
+    <string name="password">Contraseña</string>
+    <string name="register">Registrarse</string>
+    <string name="all_tests">Todos los examenes</string>
+    <string name="results_students">Notas de los estudiantes</string>
 </resources>

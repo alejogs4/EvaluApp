@@ -22,19 +22,27 @@
             android:layout_marginTop="20dp"
             android:src="@drawable/evaluation"
             android:layout_gravity="center_horizontal"/>
-        <EditText
-            android:id="@+id/user_field"
+        <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Nombre de usuario"
-            android:layout_marginTop="20dp"/>
-        <EditText
-            android:id="@+id/password_field"
+            android:layout_height="match_parent">
+            <EditText
+                android:id="@+id/user_field"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/username"
+                android:layout_marginTop="20dp"/>
+        </android.support.design.widget.TextInputLayout>
+        <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Contraseña"
-            android:layout_marginTop="20dp"
-            android:inputType="textPassword"/>
+            android:layout_height="match_parent">
+            <EditText
+                android:id="@+id/password_field"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/password"
+                android:layout_marginTop="20dp"
+                android:inputType="textPassword"/>
+        </android.support.design.widget.TextInputLayout>
         <Button
             android:id="@+id/btn_login"
             android:text="Ingresar"

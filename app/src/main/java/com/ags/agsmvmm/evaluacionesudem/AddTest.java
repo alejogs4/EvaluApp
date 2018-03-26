@@ -36,7 +36,9 @@ public class AddTest extends AppCompatActivity {
 
         Bundle extras = getIntent().getExtras();
         final String id = extras.getString("id");
+
         connect();
+
         addTestButton.setOnClickListener(view -> {
             if ( thereAreEmptyInputs() ) {
                 Toast.makeText(AddTest.this,"Tienes que llenar todos los campos",Toast.LENGTH_SHORT).show();
