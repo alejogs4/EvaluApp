@@ -27,7 +27,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
- * Created by USUARIO on 19/03/2018.
+ * Created by Alejandro Garcia on 19/03/2018.
  */
 
 public class TestsTeacher  extends AppCompatActivity{
@@ -36,15 +36,11 @@ public class TestsTeacher  extends AppCompatActivity{
     private ListView listTests;
     private ProgressBar progressTests;
     private TextView welcomeTitle;
+    private TextView thereAreNotTests;
 
     private List<Tests> tests = new ArrayList<>();
     private ArrayList<String> testsArray = new ArrayList<>();
     private ArrayAdapter adapter;
-
-    private Toolbar toolbar;
-    private DrawerLayout drawerLayout;
-    private NavigationView navigationView;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,16 +55,7 @@ public class TestsTeacher  extends AppCompatActivity{
         String name = extras.getString("name");
         final String id = extras.getString("id");
 
-        welcomeTitle.setText("Bienvenido profesor " + name);
-
-        setActionBar(toolbar);
-
-        navigationView.setNavigationItemSelectedListener(item -> {
-            if(item.isChecked()) item.setChecked(false);
-            else item.setChecked(true);
-
-            return false;
-        });
+        welcomeTitle.setText(getString(R.string.welcome_teacher) + name);
 
         addTestButton.setOnClickListener(view -> {
             Intent i = new Intent(TestsTeacher.this,AddTest.class);
@@ -83,19 +70,16 @@ public class TestsTeacher  extends AppCompatActivity{
             in.putExtra("idTest",tests.get(i).getTestType().toString());
             startActivity(in);
         });
-        listTests.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-                String idTest = testsArray.get(i).split(" ")[0];
-                Intent in = new Intent(TestsTeacher.this,DeleteActivity.class);
-                in.putExtra("id",idTest);
-                startActivity(in);
-                return false;
-            }
+        listTests.setOnItemLongClickListener((adapterView, view, i, l) -> {
+            String idTest = testsArray.get(i).split(" ")[0];
+            Intent in = new Intent(TestsTeacher.this,DeleteActivity.class);
+            in.putExtra("id",idTest);
+            startActivity(in);
+            return false;
         });
     }
 
-    protected void onRestart() {
+    protected void onRestart () {
         super.onRestart();
         testsArray.clear();
         progressTests.setVisibility(View.VISIBLE);
@@ -121,7 +105,7 @@ public class TestsTeacher  extends AppCompatActivity{
                     progressTests.setVisibility(View.INVISIBLE);
                 }
                 else {
-                    Toast.makeText(TestsTeacher.this,"No se encontraron pruebas",Toast.LENGTH_SHORT).show();
+                    thereAreNotTests.setVisibility(View.VISIBLE);
                 }
             }
             @Override
@@ -132,13 +116,11 @@ public class TestsTeacher  extends AppCompatActivity{
     }
 
     private void connect () {
-        toolbar = findViewById(R.id.toolbar);
-        drawerLayout = findViewById(R.id.drawer_layout);
-        navigationView = findViewById(R.id.navigationView);
         welcomeTitle = findViewById(R.id.txt_name_welcome);
         addTestButton = findViewById(R.id.btn_add_test);
         listTests = findViewById(R.id.list_tests);
         progressTests = findViewById(R.id.pb_tests);
+        thereAreNotTests = findViewById(R.id.txt_no_tests);
     }
 
 }

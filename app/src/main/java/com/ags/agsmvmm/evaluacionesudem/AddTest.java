@@ -27,7 +27,6 @@ public class AddTest extends AppCompatActivity {
     private Button addTestButton;
     private EditText editTitle;
     private EditText editValue;
-    private RadioGroup groupType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +62,7 @@ public class AddTest extends AppCompatActivity {
                 editTitle.getText().toString(),
                 editValue.getText().toString(),
                 id,
-                getType()
+                "1"
         );
         test.enqueue(new Callback<List<Tests>>() {
             @Override
@@ -84,14 +83,6 @@ public class AddTest extends AppCompatActivity {
     }
 
     /**
-     * Method that return
-     * @return 1 si el examen es de verdadero o falso,2 si el examen es de 4 opciones
-     */
-    private String getType () {
-        return  groupType.getCheckedRadioButtonId() == R.id.false_true ? "1" : "2";
-    }
-
-    /**
      * Verifica si hay
      * @return
      */
@@ -99,10 +90,12 @@ public class AddTest extends AppCompatActivity {
         return editTitle.getText().toString().isEmpty() || editValue.getText().toString().isEmpty();
     }
 
+    /**
+     * Conecta los elementos de la UI con la clase
+     */
     private void connect () {
         addTestButton = findViewById(R.id.btn_add_a);
         editTitle = findViewById(R.id.edit_title);
         editValue = findViewById(R.id.edit_value);
-        groupType = findViewById(R.id.type_group);
     }
 }
