@@ -40,23 +40,14 @@ public class TestActivity extends AppCompatActivity {
 
 
     private List<Questions> questions = new ArrayList<>();
-    private List<Questions> currentQuestions = new ArrayList<>();
 
     private String type;
-
-    private float score;
-    private int goodAnswer;
-    private  int init;
-    private float numQuestions;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.test_activity);
-        score  = 0;
-        goodAnswer = 0;
-        init = 0;
-        numQuestions = 0;
+
         connect();
         Bundle extras = getIntent().getExtras();
         final String id = extras.getString("id");
@@ -64,48 +55,14 @@ public class TestActivity extends AppCompatActivity {
         type = extras.getString("typeTest");
         loadQuestions(id);
         btnNext.setOnClickListener(view -> {
-            numQuestions = questions.size() == 0 ? numQuestions : numQuestions++;
-            verifyGoodAnswer();
-            setQuestion(type);
+
         });
         btnFinish.setOnClickListener(view -> {
-            Toast.makeText(TestActivity.this, R.string.test_finish,Toast.LENGTH_SHORT).show();
-            float tas;
 
-            tas = 5 / (numQuestions / 4);
-
-            score =  tas * goodAnswer;
-            if(type.equals("1")) score = numQuestions;
-            saveNote(idStudent);
             finish();
         });
     }
 
-    private void verifyGoodAnswer() {
-        switch (answers.getCheckedRadioButtonId()) {
-            case R.id.a_1 :
-                goodAnswer = getQuestion(answer1.getText().toString()) ? goodAnswer + 1 : goodAnswer;
-                break;
-            case R.id.a_2 :
-                goodAnswer = getQuestion(answer2.getText().toString()) ? goodAnswer + 1 : goodAnswer;
-                break;
-            case R.id.a_3 :
-                goodAnswer = getQuestion(answer3.getText().toString()) ? goodAnswer + 1 : goodAnswer;
-                break;
-            default :
-                goodAnswer = getQuestion(answer4.getText().toString()) ? goodAnswer + 1 : goodAnswer;
-                break;
-        }
-    }
-
-    private boolean getQuestion (String answer) {
-        for(int i = 0; i < currentQuestions.size();i++ ) {
-            if(currentQuestions.get(i).getAnswer().equals(answer)) {
-                return currentQuestions.get(i).getIsCorrect();
-            }
-        }
-        return false;
-    }
 
     /**
      * Metodo que carga cada una de las preguntas del examen
@@ -122,8 +79,8 @@ public class TestActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<Questions>> call, Response<List<Questions>> response) {
                 if(response.code() == 200) {
-                    questions = response.body();
-                    setQuestion(type);
+                    setQuestions(response.body());
+                    setQuestion();
                 }
                 else {
                     Toast.makeText(TestActivity.this, R.string.questions_not_found,Toast.LENGTH_SHORT).show();
@@ -144,7 +101,7 @@ public class TestActivity extends AppCompatActivity {
         Retrofit retrofit = new Retrofit.Builder().baseUrl(TeacherLogin.API_URL).addConverterFactory(GsonConverterFactory.create())
                 .build();
         CallsService service = retrofit.create(CallsService.class);
-        final Call<List<Object>> getNotes = service.saveNotes(questions.get(0).getIdTest(),id,score);
+        final Call<List<Object>> getNotes = service.saveNotes(questions.get(0).getIdTest(),id,0);
         getNotes.enqueue(new Callback<List<Object>>() {
             @Override
             public void onResponse(Call<List<Object>> call, Response<List<Object>> response) {
@@ -166,41 +123,68 @@ public class TestActivity extends AppCompatActivity {
 
     /**
      *  Filtra las preguntas para asi irlas mostrando en la pantalla
-     * @param type
+     *
      */
-    private void setQuestion(String type) {
-        numQuestions++;
-        int pass = type.equals("1") ? 1 : 4;
-        if(questions.size() == 0 || init + pass > questions.size()) {
-            Toast.makeText(TestActivity.this, R.string.no_more_questions,Toast.LENGTH_SHORT).show();
+    private void setQuestion() {
+        if(questions.size() == 0) {
+            Toast.makeText(TestActivity.this,"No hay mas preguntas",Toast.LENGTH_SHORT).show();
             return;
         }
-        currentQuestions.clear();
+        String searchParameter = questions.get(0).getQuestion().split("-")[1];
+        String type = questions.get(0).getQuestion().split("-")[0];
 
-        for(int j = init ; j < init + pass; j++) {
-            currentQuestions.add(questions.get(j));
+        List<String> answersToQuestions = new ArrayList<>();
+
+        for(int i = 0;i < questions.size();i++) {
+            if(questions.get(i).getQuestion().split("-")[1].equals(searchParameter)) {
+                answersToQuestions.add(questions.get(i).getAnswer());
+                questions.remove(i);
+            }
         }
-        init = init + pass;
-        txtQuestionTitle.setText(currentQuestions.get(0).getQuestion());
+        setVisibility(type);
+        txtQuestionTitle.setText(searchParameter);
+        if(isFourOptions(type)) {
+            for(int i = 0; i < answersToQuestions.size(); i++) {
+                if(i == 0) answer1.setText(answersToQuestions.get(0));
+                if(i == 1) answer2.setText(answersToQuestions.get(1));
+                if(i == 2) answer3.setText(answersToQuestions.get(2));
+                if(i == 3) answer4.setText(answersToQuestions.get(3));
+            }
+        }
+        else if(isTrueOrFalse(type)) {
+            for(int i = 0;i < answersToQuestions.size();i++) {
+                if(i == 0) answer1.setText(answersToQuestions.get(0));
+                if(i == 1) answer2.setText(answersToQuestions.get(1));
+            }
+        }
+        else if(isToComplete(type)) {
+            
+        }
 
-        if(pass == 1) {
-            answer1.setText("VERDADERO");
-            answer2.setText("FALSO");
+    }
+
+    private void setVisibility(String type) {
+        if(isFourOptions(type)) {
+            answers.setVisibility(View.VISIBLE);
+            answer3.setVisibility(View.VISIBLE);
+            answer4.setVisibility(View.VISIBLE);
+        }
+        else if(isTrueOrFalse(type)) {
             answer3.setVisibility(View.INVISIBLE);
             answer4.setVisibility(View.INVISIBLE);
         }
-        else {
-            for (int i = 0; i < currentQuestions.size(); i++) {
-                if( i == 0) answer1.setText(currentQuestions.get(i).getAnswer());
+        else if(isToComplete(type)) {
 
-                if( i == 1) answer2.setText(currentQuestions.get(i).getAnswer());
-
-                if( i == 2) answer3.setText(currentQuestions.get(i).getAnswer());
-
-                if( i == 3) answer4.setText(currentQuestions.get(i).getAnswer());
-            }
         }
     }
+
+    private boolean isFourOptions(String type){ return type.equals("1"); }
+
+    private boolean isTrueOrFalse(String type){ return type.equals("2"); }
+
+    private boolean isToComplete(String type){ return type.equals("3"); }
+
+    private void setQuestions(List<Questions> questions) { this.questions = questions; }
 
     private void connect () {
         txtQuestionTitle = findViewById(R.id.question_title);

@@ -43,6 +43,7 @@ public class AddQuestion extends AppCompatActivity {
 
     private int interval = 1;
     private int questionsCount = 0;
+    private boolean theCorrectWasSelected = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,10 +99,10 @@ public class AddQuestion extends AppCompatActivity {
                 .build();
         CallsService service = retrofit.create(CallsService.class);
         final Call<List<Questions>> question = service.addQuestion(
-                txtQuestion.getText().toString(),
+                type + "-" + txtQuestion.getText().toString(),
                 getAnswer(type),
                 id,
-                type.equals("3") ? true : getCorrect()
+                type.equals("3") ? true : type.equals("1") && theCorrectWasSelected ? false : getCorrect()
         );
         question.enqueue(new Callback<List<Questions>>() {
             @Override
@@ -109,7 +110,10 @@ public class AddQuestion extends AppCompatActivity {
                 if(response.isSuccessful()) {
                     Toast.makeText(AddQuestion.this,"Pregunta guardada",Toast.LENGTH_SHORT).show();
                     txtAnswer.setText("");
-                    if(getCorrect()) correctAnswer.setVisibility(View.INVISIBLE);
+                    if(getCorrect()) {
+                        correctAnswer.setVisibility(View.INVISIBLE);
+                        setTheCorrectWasSelected(true);
+                    }
                 }
                 else {
                     Toast.makeText(AddQuestion.this,"La pregunta no pudo ser guardada",Toast.LENGTH_SHORT).show();
@@ -137,10 +141,10 @@ public class AddQuestion extends AppCompatActivity {
      * @return
      */
     private String getAnswer (String type) {
-        if(type == "2"){
+        if(type.equals("2")){
             return getCorrect() ? "VERDADERO" : "FALSO";
         }
-        return txtAnswer.getText().toString();
+        return type.equals("3") ? txtAnswer.getText().toString().toLowerCase() :  txtAnswer.getText().toString();
     }
 
     /**
@@ -164,6 +168,7 @@ public class AddQuestion extends AppCompatActivity {
             correctAnswer.setVisibility(View.VISIBLE);
             btnAdd.setVisibility(View.VISIBLE);
             spinnerTypeTest.setVisibility(View.INVISIBLE);
+            setTheCorrectWasSelected(false);
         }
         else if( visibility && isTrueOrFalse(type) ) {
             textInputQuestion.setVisibility(View.VISIBLE);
@@ -231,6 +236,12 @@ public class AddQuestion extends AppCompatActivity {
      * @param type
      */
     private void  setTypeQuestion (String type) { this.type = type; }
+
+    /**
+     * Agrega valor para saber si la correcta ya fue seleccionada
+     * @param theCorrectWasSelected
+     */
+    private void setTheCorrectWasSelected (boolean theCorrectWasSelected) { this.theCorrectWasSelected = theCorrectWasSelected; }
 
     /**
      * Resetea el contador de preguntas
