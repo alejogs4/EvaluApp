@@ -15,6 +15,7 @@
     <string name="welcome_teacher">Bienvenido profesor</string>
     <string name="there_are_not_tests">No hay pruebas</string>
     <string name="complete">Completa</string>
+    <string name="complete_sentence">Completa el enunciado</string>
     <string-array name="type_array">
         <item>Seleccionar tipo de examen</item>
         <item>Cuatro opciones</item>

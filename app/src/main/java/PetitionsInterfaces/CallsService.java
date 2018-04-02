@@ -55,7 +55,7 @@ public interface CallsService {
     @POST(API_ROUTE + "note")
     Call<List<Object>> saveNotes(@Field("id_test") int test,
                                  @Field("id_student") String idStudent,
-                                 @Field("value_test") float value);
+                                 @Field("value_test") double value);
 
     @GET(API_ROUTE + "note/{id}")
     Call<List<Notes>> getNotesByUser(@Path("id") String id);

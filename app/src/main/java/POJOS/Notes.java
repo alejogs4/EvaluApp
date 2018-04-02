@@ -15,7 +15,7 @@ public class Notes {
     private String idStudent;
 
     @SerializedName("value_test")
-    private Integer valueTest;
+    private double valueTest;
 
     @SerializedName("username")
     private String username;
@@ -36,7 +36,7 @@ public class Notes {
         this.idStudent = idStudent;
     }
 
-    public Integer getValueTest() {
+    public double getValueTest() {
         return valueTest;
     }
 
